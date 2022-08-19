@@ -3,6 +3,7 @@ const sequelize = require("./config/connection");
 const path = require("path");
 const exphbs = require("express-handlebars");
 const hbs = exphbs.create({});
+const routes = require("./controllers");
 
 const sessions = require("express-session");
 // const SequelizeStore = require("connect-session-sequelize")(session.Store);
@@ -19,8 +20,8 @@ app.use(express.urlencoded({ extended: true }));
 
 //middleware for style sheet accessed through the public folder
 app.use(express.static(path.join(__dirname, "public")));
-//turn on our routes NOT IMPLEMENTING ROUTES YET
-//app.use(routes)
+//turn on our routes
+app.use(routes);
 
 //turn on connection to db and server
 // sync means that this is sequelize taking the models and connection them to associated database tables
