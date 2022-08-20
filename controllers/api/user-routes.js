@@ -60,18 +60,60 @@ router.post("/", (req, res) => {
   })
     .then((dbUserData) => {
       // we do session.save() in order to make sure the session is created before we send the response back(initiates the creation of session then runs callback function once to complete)
-      //   req.session.save(() => {
-      //     req.session.user_id = dbUserData.id;
-      //     req.session.username = dbUserData.username;
-      //     req.session.loggedIn = true;
-      console.log(dbUserData);
-      res.json(dbUserData);
-      //   });
+      req.session.save(() => {
+        req.session.user_id = dbUserData.id;
+        req.session.username = dbUserData.username;
+        req.session.loggedIn = true;
+        // console.log(dbUserData);
+        res.json(dbUserData);
+      });
     })
     .catch((err) => {
       console.log(err);
       res.status(500).json(err);
     });
+});
+//Login route
+router.post("/login", (req, res) => {
+  // expects {email: 'lernantino@gmail.com', password: 'password1234'}
+  User.findOne({
+    where: {
+      email: req.body.email,
+    },
+  }).then((dbUserData) => {
+    if (!dbUserData) {
+      res.status(400).json({ message: "No user with that email address!" });
+      return;
+    }
+
+    const validPassword = dbUserData.checkPassword(req.body.password);
+
+    if (!validPassword) {
+      res.status(400).json({ message: "Incorrect password!" });
+      return;
+    }
+    req.session.save(() => {
+      //declare our session variables
+      req.session.user_id = dbUserData.id;
+      req.session.username = dbUserData.username;
+      // This tells us whether or not we are logged in for handlebar frontend purposes
+      req.session.loggedIn = true;
+    });
+    res.json({ user: dbUserData, message: "You are now logged in!" });
+  });
+});
+
+//Logout Route
+router.post("/logout", (req, res) => {
+  //here we can destroy the session by using destroy()
+  if (req.session.loggedIn) {
+    req.session.destroy(() => {
+      //code saying successful delete
+      res.status(204).end();
+    });
+  } else {
+    res.status(404).end();
+  }
 });
 
 // Update a User

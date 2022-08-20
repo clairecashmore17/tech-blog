@@ -5,7 +5,7 @@
 :root {
   --primary-color: rgb(35, 37, 35);
   --secondary-color: #a9a8a8;
-  --tertiary-color: #39a6b2;
+  --tertiary-color: #79c298;
 }
 body,
 html {
@@ -42,6 +42,16 @@ button:hover {
   background-color: #3486eb;
 }
 header {
+  display: flex;
+  flex-flow: column wrap;
+  flex-direction: column;
+  background-color: var(--primary-color);
+}
+.nav-class {
+  background-color: var(--primary-color);
+}
+.login-style {
+  color: var(--tertiary-color);
   background-color: var(--primary-color);
 }
 .main-title {
@@ -68,17 +78,21 @@ input {
   padding: 0.5%;
   border-radius: 5px;
   border: 1px solid #ccc;
+  background-color: white;
+  font-weight: 200;
 }
 
 textarea:focus,
 input:focus {
   outline: none;
   border: 1px solid #3486eb;
+  background-color: white;
 }
 
 textarea {
   min-width: 40%;
   min-height: 100px;
+  background-color: white;
 }
 
 form > div {
@@ -117,11 +131,12 @@ main {
 
 .btn-no-style {
   background: none;
+  background-color: var(--primary-color);
   border: none;
   padding: 0;
   cursor: pointer;
   text-decoration: none;
-  color: #225ca3;
+  color: var(--tertiary-color);
   font-size: 100%;
   font-weight: bold;
   transition: color 0.1s;
