@@ -1,0 +1,16 @@
+{{! THIS IS A PARTIAL }}
+<div class="comments">
+  {{! Here we use 'this' so we can reference the comment we sent in through the partial invoke on the other handlebar pages  }}
+  {{#each this}}
+    <section class="comment">
+      <div class="meta">
+        {{user.username}}
+        on
+        {{format_date created_at}}
+      </div>
+      <div class="text">
+        {{comment_text}}
+      </div>
+    </section>
+  {{/each}}
+</div>
