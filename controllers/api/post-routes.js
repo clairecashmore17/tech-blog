@@ -4,7 +4,7 @@ const { User, Post, Comment } = require("../../models");
 //get all posts
 router.get("/", (req, res) => {
   Post.findAll({
-    attributes: ["id", "post_url", "title", "created_at"],
+    attributes: ["id", "post_text", "title", "created_at"],
     // this shows our posts in most recent order
     order: [["created_at", "DESC"]],
     //performing the JOIN with include
@@ -62,7 +62,7 @@ router.get("/:id", (req, res) => {
 router.post("/", (req, res) => {
   Post.create({
     title: req.body.title,
-    post_url: req.body.post_url,
+    post_text: req.body.post_text,
     user_id: req.body.user_id,
   })
     .then((dbPostData) => res.json(dbPostData))
