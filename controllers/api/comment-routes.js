@@ -26,16 +26,20 @@ router.get("/", (req, res) => {
 
 //post comment
 router.post("/", (req, res) => {
-  Comment.create({
-    comment_text: req.body.comment_text,
-    user_id: req.body.user_id,
-    post_id: req.body.post_id,
-  })
-    .then((dbCommentData) => res.json(dbCommentData))
-    .catch((err) => {
-      console.log(err);
-      res.status(400).json(err);
-    });
+  //check our session for saved data
+  if (req.session) {
+    Comment.create({
+      comment_text: req.body.comment_text,
+      //take our user_id from the current logged on user from sessions
+      user_id: req.session.user_id,
+      post_id: req.body.post_id,
+    })
+      .then((dbCommentData) => res.json(dbCommentData))
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json(err);
+      });
+  }
 });
 
 //Delete comments
