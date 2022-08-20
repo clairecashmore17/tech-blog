@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const { User, Post, Comment } = require("../../models");
-
+const withAuth = require("../../utils/auth");
 //get all posts
 router.get("/", (req, res) => {
   Post.findAll({
@@ -59,11 +59,12 @@ router.get("/:id", (req, res) => {
 });
 
 //Post a new post from a user
-router.post("/", (req, res) => {
+// THIS HAS BEEN UPDATED TO ACCOUNT FOR FRONT END INTERACTION reference 'session'
+router.post("/", withAuth, (req, res) => {
   Post.create({
     title: req.body.title,
     post_text: req.body.post_text,
-    user_id: req.body.user_id,
+    user_id: req.session.user_id,
   })
     .then((dbPostData) => res.json(dbPostData))
     .catch((err) => {
@@ -73,7 +74,7 @@ router.post("/", (req, res) => {
 });
 
 //Update a post title
-router.put("/:id", (req, res) => {
+router.put("/:id", withAuth, (req, res) => {
   Post.update(
     {
       title: req.body.title,
@@ -98,7 +99,7 @@ router.put("/:id", (req, res) => {
 });
 
 //create a route to DELETE posts
-router.delete("/:id", (req, res) => {
+router.delete("/:id", withAuth, (req, res) => {
   Post.destroy({
     where: {
       id: req.params.id,
