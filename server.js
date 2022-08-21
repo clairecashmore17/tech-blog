@@ -23,6 +23,7 @@ const sess = {
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+app.use(express.static(path.join(__dirname, "public")));
 app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
 // After creating our session , use the session here
@@ -32,7 +33,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //middleware for style sheet accessed through the public folder
-app.use(express.static(path.join(__dirname, "public")));
+
 //turn on our routes
 app.use(routes);
 
