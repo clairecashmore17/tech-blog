@@ -14,7 +14,7 @@ router.get("/", (req, res) => {
       },
       {
         model: Post,
-        attributes: ["post_url"],
+        attributes: ["post_text"],
       },
     ],
   })
