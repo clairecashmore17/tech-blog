@@ -46,10 +46,14 @@ header {
   flex-flow: column wrap;
   flex-direction: column;
   background-color: var(--primary-color);
+  width: 100%;
 }
 .nav-class {
+  display: flex;
+  justify-content: space-evenly;
   background-color: var(--primary-color);
 }
+
 .login-style {
   color: var(--tertiary-color);
   background-color: var(--primary-color);
@@ -116,8 +120,8 @@ header {
   border-bottom: 1px solid #ccc;
   display: flex;
   justify-content: space-between;
-  align-items: center;
   padding: 0 1%;
+  margin: 0;
 }
 
 header h1 {
@@ -208,9 +212,7 @@ main {
 .comment {
   padding: 1%;
   margin-bottom: 1%;
-}
-
-.comment:nth-child(odd) {
+  border: 1px solid var(--primary-color);
   background-color: #fff5eb;
 }
 
@@ -218,6 +220,11 @@ main {
   font-size: 90%;
   margin-bottom: 0.5%;
   opacity: 0.8;
+  border-bottom: #333 1px dashed;
+  background-color: #fff5eb;
+}
+.comment .comment-text {
+  background-color: #fff5eb;
 }
 
 .new-post-form input {

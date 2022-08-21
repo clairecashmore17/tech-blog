@@ -23,7 +23,7 @@ router.get("/:id", (req, res) => {
     include: [
       {
         model: Post,
-        attributes: ["id", "title", "post_text", "created_at"],
+        attributes: ["id", "title", "post_url", "created_at"],
       },
       // include the Comment model here:
       {
@@ -49,6 +49,41 @@ router.get("/:id", (req, res) => {
     });
 });
 
+// post to request login info
+router.post("/login", (req, res) => {
+  // expects {email: 'lernantino@gmail.com', password: 'password1234'}
+  User.findOne({
+    where: {
+      email: req.body.email,
+    },
+  }).then((dbUserData) => {
+    if (!dbUserData) {
+      res.status(400).json({ message: "No user with that email address!" });
+      return;
+    }
+
+    const validPassword = dbUserData.checkPassword(req.body.password);
+
+    if (!validPassword) {
+      res.status(400).json({ message: "Incorrect password!" });
+      return;
+    }
+
+    req.session.save(() => {
+      // declare session variables
+      req.session.user_id = dbUserData.id;
+      req.session.username = dbUserData.username;
+      req.session.loggedIn = true;
+
+      res.json({
+        user_id: dbUserData.id,
+        username: dbUserData.username,
+        message: "You are now logged in!",
+      });
+    });
+  });
+});
+
 // POST /api/users
 router.post("/", (req, res) => {
   //expects {username: 'Claire', email: 'cbear5@live.com', password: 'password1234'}
@@ -72,40 +107,6 @@ router.post("/", (req, res) => {
       console.log(err);
       res.status(500).json(err);
     });
-});
-
-//Login route
-router.post("/login", (req, res) => {
-  // expects {email: 'lernantino@gmail.com', password: 'password1234'}
-  User.findOne({
-    where: {
-      email: req.body.email,
-    },
-  }).then((dbUserData) => {
-    if (!dbUserData) {
-      res.status(400).json({ message: "No user with that email address!" });
-      return;
-    }
-
-    const validPassword = dbUserData.checkPassword(req.body.password);
-
-    if (!validPassword) {
-      res.status(400).json({ message: "Incorrect password!" });
-      return;
-    }
-    req.session.save(() => {
-      //declare our session variables
-      req.session.user_id = dbUserData.id;
-      req.session.username = dbUserData.username;
-      // This tells us whether or not we are logged in for handlebar frontend purposes
-      req.session.loggedIn = true;
-    });
-    res.json({
-      user_id: dbUserData.id,
-      username: dbUserData.username,
-      message: "You are now logged in!",
-    });
-  });
 });
 
 // Update a User
