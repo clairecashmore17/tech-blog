@@ -100,7 +100,11 @@ router.post("/login", (req, res) => {
       // This tells us whether or not we are logged in for handlebar frontend purposes
       req.session.loggedIn = true;
     });
-    res.json({ user: dbUserData, message: "You are now logged in!" });
+    res.json({
+      user_id: dbUserData.id,
+      username: dbUserData.username,
+      message: "You are now logged in!",
+    });
   });
 });
 
