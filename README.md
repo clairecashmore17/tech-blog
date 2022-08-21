@@ -9,7 +9,7 @@
 Create an account; post,comment, and view different posts through your own registered account! Keep up to date with your fellow tech friends.
 
 What it looks like!
-<img = src "" >
+<img  src = "./ScreenCap.png" />
 
 ## Table of Contents
 
